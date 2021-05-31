@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 # Set up perceptron algorithm to model randomised target functions. track performance in the form of the number of
-# iterations for the model to converge on the target function, and the likelihood of misclassifying a random point in
-# the target space. 
+# iterations for the model to converge on the target function, and the likelihood of mis-classifying a random point in
+# the target space.
 
 # Specify desired training sample size. test sample size will be half the size.
 training_sample_size = 100
@@ -21,16 +21,19 @@ for i in range(repeats):
 
     # Create random target function on [-1, 1] x [-1, 1].
     # Slope between -2 and 2.
+    # TODO: create generate_slope function.
     slope = np.random.rand() * 2
     if np.random.rand() < 0.5:
         slope *= -1
 
     # Intercept between -1 and 1.
+    # TODO: create generate_intercept function.
     intercept = np.random.rand()
     if np.random.rand() < 0.5:
         intercept *= -1
 
     # Create training sample to train model on.
+    # TODO: create training_sample function, including function values.
     training_sample = np.random.random((training_sample_size, 2)) * 2 - 1  # random takes input sample size & dimensions
 
     # Get the correct target function values for the training set.
@@ -38,7 +41,8 @@ for i in range(repeats):
                          else -1 if training_sample[i][1] < intercept + slope * training_sample[i][0]
                          else 0 for i in range(training_sample_size)]
 
-    # Create testing sample to test model on. Displayed as a grid.
+    # Create testing sample to test model on.
+    # TODO: create testing_sample function, including function values.
     testing_sample = np.random.random((testing_sample_size, 2)) * 2 - 1  # random takes input sample size & dimensions
 
     # Get the correct target function values for the testing set.
@@ -62,6 +66,7 @@ for i in range(repeats):
     iters = 0
 
     # while current iteration function values don't match the target function values for the training set
+    # TODO: create iterate function for perceptron.
     while training_sample_y_model != training_sample_y:
         # Increase iteration counter.
         iters += 1
@@ -99,7 +104,6 @@ print(df)
 # For each repeat, we have testing_sample_size points. Num_misclassified / testing_sample_size gives chance for given
 # repeat. Average this quantity over all repeats to give overall average.
 misclassified_chance_per_repeat = df['Misclassified'] / testing_sample_size
-print(misclassified_chance_per_repeat)
 misclassified_chance_avg = misclassified_chance_per_repeat.mean()
 
 print("Avg iterations required for convergence: {}".format(df["Iterations"].mean()))
